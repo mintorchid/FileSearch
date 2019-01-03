@@ -1,4 +1,4 @@
-# FileSearch
+# mintFileSearch
 A very simple text file content search C program
 
 ### Algorithm
