@@ -6,7 +6,7 @@ A very simple text file content search C program
 * 读入所有文件，将文件内容与搜索列表中的列表词逐个匹配
 
 ### LICENSE
-   https://github.com/mintorchid/FileSearch
+   https://github.com/mintorchid/mintFileSearch
 
    Copyright 2018-2019 mintorchid <992652081@qq.com>
 
