@@ -8,7 +8,7 @@ A very simple text file content search C program
 ### LICENSE
    https://github.com/mintorchid/FileSearch
 
-   Copyright 2019 mintorchid <992652081@qq.com>
+   Copyright 2018-2019 mintorchid <992652081@qq.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
