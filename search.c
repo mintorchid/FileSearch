@@ -20,40 +20,50 @@ Unless required by applicable law or agreed to in writing, software distributed 
 #include<string.h>
 
 int main(){
-    int id;
+
+    //data block
+    const int BLOCK = 512;
+    char input[BLOCK];//input from keyboard
+    int term_count;
+    char term[BLOCK][BLOCK];//terms will be search
+    int frequency[BLOCK];//the frequency of term which be searched
+    int total_frequency, every_frequency;
+    int answer_count;
+    int answer_frequency[BLOCK];
+    char answer_filename[BLOCK][BLOCK];
+
+    //buffer
+    const int BUFFER_Size = 64 * 1024;
+    char buffer[BUFFER_Size];
+    int i, j;//use to cycle
+    int temp_int;
+    char *temp_char_star;
+    char temp_char_array[BLOCK];
+
+    //file
+    char src[28] = "./";//search source address
     char filename[] = "001";
-    const char SUFFIX[] = ".txt";
-    char src[28] = "./";
+    const char SUFFIX[] = ".txt";//filename suffix
+    FILE *fr = NULL;//put file will be search
+    int id;//TODO, use to change filename
 
-    FILE *fr = NULL;
-    const int MEM = 1024 * 2;
-    char buff[MEM];
-    char input[64];
-    char term[256][256];
-    char ans[512][128];
-    char *temp;
-    int tcount, anscount, i, j, t;
-    int search[256];
-
-    int bevery_search;
-    int total_search, every_search;
-    int ans_search[512];
-    char tans[128];
+    //TODO
+    int bevery_frequency;//TODO, to explain if need exact search
 
     while(1){
         gets(input);
             fflush(stdin);
-            gets(buff);
+            gets(buffer);
 
-            bevery_search = 0;//TODO
+            bevery_frequency = 0;//TODO
 
-            anscount = 0;
-            tcount = 0;
-            temp = strtok(buff, " ");
-            while(temp != NULL) {
-                strcpy(term[tcount], temp);
-                tcount++;
-                temp = strtok(NULL, " ");
+            answer_count = 0;
+            term_count = 0;
+            temp_char_star = strtok(buffer, " ");
+            while(temp_char_star != NULL) {
+                strcpy(term[term_count], temp_char_star);
+                term_count++;
+                temp_char_star = strtok(NULL, " ");
             }
 
             id = 1;
@@ -63,50 +73,50 @@ int main(){
             strcat(src, SUFFIX);
             fr = fopen(src, "r");
             while(fr){
-                for(i = 0; i < tcount; i++)
+                for(i = 0; i < term_count; i++)
                 {
-                    search[i] = 0;
+                    frequency[i] = 0;
                 }
                 while(!feof(fr)){
-                    memset(buff, '\0', sizeof(buff));
-                    fgets(buff, MEM, fr);
+                    memset(buffer, '\0', sizeof(buffer));
+                    fgets(buffer, sizeof(buffer), fr);
 
-                        for(i = 0; i < tcount; i++)
+                        for(i = 0; i < term_count; i++)
                         {
-                            temp = strstr(buff, term[i]);
-                            while(temp != NULL) {
-                                if((temp + strlen(term[i]))[0] == ' ' || (temp + strlen(term[i]))[0] == '\0') {
-                                    if(strcmp(temp, buff) == 0 || (temp - 1)[0] == ' ') {
-                                        search[i]++;
+                            temp_char_star = strstr(buffer, term[i]);
+                            while(temp_char_star != NULL) {
+                                if((temp_char_star + strlen(term[i]))[0] == ' ' || (temp_char_star + strlen(term[i]))[0] == '\0') {
+                                    if(strcmp(temp_char_star, buffer) == 0 || (temp_char_star - 1)[0] == ' ') {
+                                        frequency[i]++;
                                     }
                                 }
-                                temp = strstr(temp + strlen(term[i]), term[i]);
+                                temp_char_star = strstr(temp_char_star + strlen(term[i]), term[i]);
                             }
                         }
                 }
                 fclose(fr);
 
-                total_search = 0;
-                for(i = 0; i < tcount; i++)
+                total_frequency = 0;
+                for(i = 0; i < term_count; i++)
                 {
-                    total_search += search[i];
+                    total_frequency += frequency[i];
                 }
 
-                every_search = 1;
-                for(i = 0; i < tcount; i++)
+                every_frequency = 1;
+                for(i = 0; i < term_count; i++)
                 {
-                    if(search[i] == 0) {
-                        every_search = 0;
+                    if(frequency[i] == 0) {
+                        every_frequency = 0;
                         break;
                     }
                 }
 
-                if (total_search > 0) {
-                    if (bevery_search == 0 || (bevery_search == 1 && every_search == 1)) {
-                        strcpy(ans[anscount], filename);
-                        strcat(ans[anscount], SUFFIX);
-                        ans_search[anscount] = total_search;
-                        anscount++;
+                if (total_frequency > 0) {
+                    if (bevery_frequency == 0 || (bevery_frequency == 1 && every_frequency == 1)) {
+                        strcpy(answer_filename[answer_count], filename);
+                        strcat(answer_filename[answer_count], SUFFIX);
+                        answer_frequency[answer_count] = total_frequency;
+                        answer_count++;
                     }
                 }
 
@@ -115,13 +125,13 @@ int main(){
                 id++;
                 sprintf(filename, "%d", id);
                 if(id < 100) {
-                    char temp[4] = "0";
-                    strcat(temp, filename);
-                    strcpy(filename, temp);
+                    char temp_char_star[4] = "0";
+                    strcat(temp_char_star, filename);
+                    strcpy(filename, temp_char_star);
                     if (id < 10) {
-                    char temp[4] = "0";
-                    strcat(temp, filename);
-                    strcpy(filename, temp);
+                    char temp_char_star[4] = "0";
+                    strcat(temp_char_star, filename);
+                    strcpy(filename, temp_char_star);
                     }
                 }
 
@@ -131,27 +141,27 @@ int main(){
             }
 
 
-                for(i = 0; i < anscount - 1; i++)
+                for(i = 0; i < answer_count - 1; i++)
                 {
-                    for(j = 0; j < anscount - 1 -i; j++)
+                    for(j = 0; j < answer_count - 1 -i; j++)
                     {
-                        if (ans_search[j] < ans_search[j + 1]) {
-                            t = ans_search[j];
-                            ans_search[j] = ans_search[j + 1];
-                            ans_search[j + 1] = t;
+                        if (answer_frequency[j] < answer_frequency[j + 1]) {
+                            temp_int = answer_frequency[j];
+                            answer_frequency[j] = answer_frequency[j + 1];
+                            answer_frequency[j + 1] = temp_int;
 
-                            strcpy(tans, ans[j]);
-                            strcpy(ans[j], ans[j + 1]);
-                            strcpy(ans[j + 1], tans);
+                            strcpy(temp_char_array, answer_filename[j]);
+                            strcpy(answer_filename[j], answer_filename[j + 1]);
+                            strcpy(answer_filename[j + 1], temp_char_array);
                         }
                     }
                 }
 
 
-            for(i = 0; i < anscount; i++)
+            for(i = 0; i < answer_count; i++)
             {
-                printf("%s", ans[i]);
-                if (i != anscount - 1) {
+                printf("%s", answer_filename[i]);
+                if (i != answer_count - 1) {
                     printf(" ");
                 }
                 else {
