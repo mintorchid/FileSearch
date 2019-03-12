@@ -16,10 +16,10 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 ****************************/
 
-#include<stdio.h>
-#include<string.h>
+#include <stdio.h>
+#include <string.h>
 
-const int BLOCK = 512;
+#include "global.h"
 
 int get_total_frequency (const int count, const int frequency[BLOCK]) {
     int total = 0;
