@@ -19,11 +19,23 @@ Unless required by applicable law or agreed to in writing, software distributed 
 #include<stdio.h>
 #include<string.h>
 
-int main(){
+const int BLOCK = 512;
+
+int get_total_frequency (const int count, const int frequency[BLOCK]) {
+    int total = 0;
+
+    for(int i = 0; i < count; i++)
+    {
+        total += frequency[i];
+    }
+
+    return total;
+}
+
+int main() {
 
     //data block
-    const int BLOCK = 512;
-    char input[BLOCK];//input from keyboard
+    //char input[BLOCK];//input from keyboard
     int term_count;
     char term[BLOCK][BLOCK];//terms will be search
     int frequency[BLOCK];//the frequency of term which be searched
@@ -51,8 +63,8 @@ int main(){
     int bevery_frequency;//TODO, to explain if need exact search
 
     while(1){
-        gets(input);
-            fflush(stdin);
+        //gets(input);
+            //fflush(stdin);
             gets(buffer);
 
             bevery_frequency = 0;//TODO
@@ -85,7 +97,7 @@ int main(){
                         {
                             temp_char_star = strstr(buffer, term[i]);
                             while(temp_char_star != NULL) {
-                                if((temp_char_star + strlen(term[i]))[0] == ' ' || (temp_char_star + strlen(term[i]))[0] == '\0') {
+                                if((temp_char_star + strlen(term[i]))[0] == ' ' || (temp_char_star + strlen(term[i]))[0] == '\0' || (temp_char_star + strlen(term[i]))[0] == '\n') {
                                     if(strcmp(temp_char_star, buffer) == 0 || (temp_char_star - 1)[0] == ' ') {
                                         frequency[i]++;
                                     }
@@ -96,11 +108,7 @@ int main(){
                 }
                 fclose(fr);
 
-                total_frequency = 0;
-                for(i = 0; i < term_count; i++)
-                {
-                    total_frequency += frequency[i];
-                }
+                total_frequency = get_total_frequency(term_count, frequency);
 
                 every_frequency = 1;
                 for(i = 0; i < term_count; i++)
