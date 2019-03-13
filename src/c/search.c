@@ -21,6 +21,26 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 #include "global.h"
 
+int tok (char buffer[BUFFER_Size], char **str, char *delim) {
+    int count = 0;
+
+    char *temp = strtok(buffer, delim);
+    while (temp != NULL) {
+        strcpy(str[count], temp);
+        count++;
+        temp = strtok(NULL, delim);
+    }
+
+    return count;
+}
+
+void init_array (const int size, int *array) {
+    for(int i = 0; i < size; i++)
+    {
+        array[i] = 0;
+    }
+}
+
 int get_total_frequency (const int count, const int frequency[BLOCK]) {
     int total = 0;
 
@@ -30,6 +50,20 @@ int get_total_frequency (const int count, const int frequency[BLOCK]) {
     }
 
     return total;
+}
+
+int get_every_frequency (const int count, const int frequency[BLOCK]) {
+    int every = 1;
+
+    for(int i = 0; i < count; i++)
+    {
+        if(frequency[i] == 0) {
+            every = 0;
+            return every;
+        }
+    }
+
+    return every;
 }
 
 int main() {
@@ -45,7 +79,6 @@ int main() {
     char answer_filename[BLOCK][BLOCK];
 
     //buffer
-    const int BUFFER_Size = 64 * 1024;
     char buffer[BUFFER_Size];
     int i, j;//use to cycle
     int temp_int;
@@ -70,13 +103,15 @@ int main() {
             bevery_frequency = 0;//TODO
 
             answer_count = 0;
-            term_count = 0;
+
+            term_count = tok(buffer, term, " ");
             temp_char_star = strtok(buffer, " ");
             while(temp_char_star != NULL) {
                 strcpy(term[term_count], temp_char_star);
                 term_count++;
                 temp_char_star = strtok(NULL, " ");
             }
+
 
             id = 1;
             strcpy(filename, "001");
@@ -85,10 +120,7 @@ int main() {
             strcat(src, SUFFIX);
             fr = fopen(src, "r");
             while(fr){
-                for(i = 0; i < term_count; i++)
-                {
-                    frequency[i] = 0;
-                }
+                init_array(term_count, frequency);
                 while(!feof(fr)){
                     memset(buffer, '\0', sizeof(buffer));
                     fgets(buffer, sizeof(buffer), fr);
@@ -110,14 +142,7 @@ int main() {
 
                 total_frequency = get_total_frequency(term_count, frequency);
 
-                every_frequency = 1;
-                for(i = 0; i < term_count; i++)
-                {
-                    if(frequency[i] == 0) {
-                        every_frequency = 0;
-                        break;
-                    }
-                }
+                every_frequency = get_every_frequency(term_count, frequency);
 
                 if (total_frequency > 0) {
                     if (bevery_frequency == 0 || (bevery_frequency == 1 && every_frequency == 1)) {

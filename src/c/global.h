@@ -17,3 +17,4 @@ Unless required by applicable law or agreed to in writing, software distributed 
 ****************************/
 
 const int BLOCK = 512;
+const int BUFFER_Size = 64 * 1024;
