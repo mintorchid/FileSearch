@@ -16,29 +16,24 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 ****************************/
 
-#include "search.h"
+#include "term.h"
 
-int get_total_frequency (const int count, const int frequency[BLOCK]) {
-    int total = 0;
+int tok (char buffer[BUFFER_Size], char str[BLOCK][BLOCK], const char *delim) {
+    int count = 0;
 
-    for(int i = 0; i < count; i++)
-    {
-        total += frequency[i];
+    char *temp = strtok(buffer, delim);
+    while (temp != NULL) {
+        strcpy(str[count], temp);
+        count++;
+        temp = strtok(NULL, delim);
     }
 
-    return total;
+    return count;
 }
 
-int get_every_frequency (const int count, const int frequency[BLOCK]) {
-    int every = 1;
-
-    for(int i = 0; i < count; i++)
+void init_array (const int size, int *array) {
+    for(int i = 0; i < size; i++)
     {
-        if(frequency[i] == 0) {
-            every = 0;
-            return every;
-        }
+        array[i] = 0;
     }
-
-    return every;
 }

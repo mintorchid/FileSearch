@@ -16,4 +16,17 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 ****************************/
 
-const int BLOCK = 512;
+#ifndef SEARCH_H
+#define SEARCH_H
+
+
+#ifndef BLOCK
+   #define BLOCK 512
+#endif // !BLOCK
+
+
+int get_total_frequency(const int count, const int frequency[BLOCK]);
+int get_every_frequency(const int count, const int frequency[BLOCK]);
+
+
+#endif
