@@ -16,7 +16,24 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 ****************************/
 
-const int BLOCK = 512;
-const int BUFFER_Size = 64 * 1024;
+#ifndef TERM_H
+#define TERM_H
 
-const char *delim = " ";
+
+#include <string.h>
+
+
+#ifndef BLOCK
+   #define BLOCK 512
+#endif // !BLOCK
+
+#ifndef BUFFER_Size
+   #define BUFFER_Size 65536
+#endif // !BLOCK
+
+
+int tok(char buffer[BUFFER_Size], char str[BLOCK][BLOCK], const char *delim);
+void init_array(const int size, int *array);
+
+
+#endif

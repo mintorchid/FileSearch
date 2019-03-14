@@ -16,17 +16,24 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 ****************************/
 
-#ifndef SEARCH_H
-#define SEARCH_H
+#include "term.h"
 
+int tok (char buffer[BUFFER_Size], char str[BLOCK][BLOCK], const char *delim) {
+    int count = 0;
 
-#ifndef BLOCK
-   #define BLOCK 512
-#endif // !BLOCK
+    char *temp = strtok(buffer, delim);
+    while (temp != NULL) {
+        strcpy(str[count], temp);
+        count++;
+        temp = strtok(NULL, delim);
+    }
 
+    return count;
+}
 
-int get_total_frequency(const int count, const int frequency[BLOCK]);
-int get_every_frequency(const int count, const int frequency[BLOCK]);
-
-
-#endif
+void init_array (const int size, int *array) {
+    for(int i = 0; i < size; i++)
+    {
+        array[i] = 0;
+    }
+}

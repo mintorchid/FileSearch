@@ -20,32 +20,13 @@ Unless required by applicable law or agreed to in writing, software distributed 
 #include <string.h>
 
 #include "search.h"
+#include "term.h"
 
-int tok (char buffer[BUFFER_Size], char str[BLOCK][BLOCK], const char *delim) {
-    int count = 0;
-
-    char *temp = strtok(buffer, delim);
-    while (temp != NULL) {
-        strcpy(str[count], temp);
-        count++;
-        temp = strtok(NULL, delim);
-    }
-
-    return count;
-}
-
-void init_array (const int size, int *array) {
-    for(int i = 0; i < size; i++)
-    {
-        array[i] = 0;
-    }
-}
 
 int main() {
 
     //data block
     //char input[BLOCK];//input from keyboard
-    int term_count;
     char term[BLOCK][BLOCK];//terms will be search
     int frequency[BLOCK];//the frequency of term which be searched
     int total_frequency, every_frequency;
@@ -53,11 +34,12 @@ int main() {
     int answer_frequency[BLOCK];
     char answer_filename[BLOCK][BLOCK];
 
+    const char *DELIM = " ";
+
     //buffer
     char buffer[BUFFER_Size];
     int i, j;//use to cycle
     int temp_int;
-    char *temp_char_star;
     char temp_char_array[BLOCK];
 
     //file
@@ -79,7 +61,7 @@ int main() {
 
             answer_count = 0;
 
-            term_count = tok(buffer, term, delim);
+            int term_count = tok(buffer, term, DELIM);
 
             id = 1;
             strcpy(filename, "001");
@@ -95,7 +77,7 @@ int main() {
 
                         for(i = 0; i < term_count; i++)
                         {
-                            temp_char_star = strstr(buffer, term[i]);
+                            char *temp_char_star = strstr(buffer, term[i]);
                             while(temp_char_star != NULL) {
                                 if((temp_char_star + strlen(term[i]))[0] == ' ' || (temp_char_star + strlen(term[i]))[0] == '\0' || (temp_char_star + strlen(term[i]))[0] == '\n') {
                                     if(strcmp(temp_char_star, buffer) == 0 || (temp_char_star - 1)[0] == ' ') {
@@ -130,7 +112,6 @@ int main() {
                     strcat(temp_char_star, filename);
                     strcpy(filename, temp_char_star);
                     if (id < 10) {
-                    char temp_char_star[4] = "0";
                     strcat(temp_char_star, filename);
                     strcpy(filename, temp_char_star);
                     }

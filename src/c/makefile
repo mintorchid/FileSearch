@@ -17,7 +17,7 @@ $(EXEC):$(OBJS)
 	$(CC) $(CC_FLAGS) -o $(EXEC) $(OBJS) -static-libgcc -fcolor-diagnostics --target=x86_64-w64-mingw -std=c11
 	@echo -----Compile successfully.-----
 
-.cpp.o:
+.c.o:
 	$(CC) $(CC_FLAGS) -g -o $@ -c $< -fcolor-diagnostics --target=x86_64-w64-mingw -std=c11
 
 clean:
